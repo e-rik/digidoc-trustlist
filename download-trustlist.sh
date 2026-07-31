@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-pushd $TRUSTLIST_DOWNLOAD_DIR
-
 printf "Downloading https://ec.europa.eu/tools/lotl/eu-lotl.xml ...\n"
 curl -fLO https://ec.europa.eu/tools/lotl/eu-lotl.xml --connect-timeout 10 --retry 5 --retry-delay 3 --retry-all-errors
 
@@ -28,5 +26,3 @@ for i in "${!urls[@]}"; do
         fi
     fi
 done
-
-popd

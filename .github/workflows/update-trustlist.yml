@@ -25,15 +25,16 @@ jobs:
           sudo install -m 0644 certificates/eidas.gov.ie-issuer.pem \
             /usr/local/share/ca-certificates/eidas.gov.ie-issuer.crt
           sudo update-ca-certificates
+          mkdir ${{ runner.temp }}/files
 
       - name: Download files
-        env:
-          TRUSTLIST_DOWNLOAD_DIR: ${{ runner.temp }}/files
-          TRUSTLIST_PACKAGE: ${{ runner.temp }}/digidoc-trustlist.tar.gz
+        run: bash ./download-trustlist.sh
+        working-directory: ${{ runner.temp }}/files
+
+      - name: Package files
         run: |
-          mkdir $TRUSTLIST_DOWNLOAD_DIR
-          bash ./download-trustlist.sh
-          tar -czf $TRUSTLIST_PACKAGE -C $TRUSTLIST_DOWNLOAD_DIR
+          ls -la ${{ runner.temp }}/files
+          tar -czf "${{ runner.temp }}/digidoc-trustlist.tar.gz" -C "${{ runner.temp }}/files"
 
       - name: Create or update rolling release
         env:
