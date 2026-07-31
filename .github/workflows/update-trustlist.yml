@@ -28,7 +28,7 @@ jobs:
           mkdir ${{ runner.temp }}/files
 
       - name: Download files
-        run: bash ./download-trustlist.sh
+        run: bash "$WORKSPACE/download-trustlist.sh"
         working-directory: ${{ runner.temp }}/files
 
       - name: Package files
