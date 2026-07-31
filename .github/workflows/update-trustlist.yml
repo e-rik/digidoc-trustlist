@@ -32,9 +32,7 @@ jobs:
         working-directory: ${{ runner.temp }}/files
 
       - name: Package files
-        run: |
-          ls -la ${{ runner.temp }}/files
-          tar -czf "${{ runner.temp }}/digidoc-trustlist.tar.gz" -C "${{ runner.temp }}/files"
+        run: tar -czf "${{ runner.temp }}/digidoc-trustlist.tar.gz" -C "${{ runner.temp }}/files" .
 
       - name: Create or update rolling release
         env:
