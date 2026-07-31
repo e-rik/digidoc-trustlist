@@ -18,6 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Install xmllint
+        run: |
+          sudo apt update
+          sudo apt install -y libxml2-utils
+
       - name: Download files
         env:
           TRUSTLIST_DOWNLOAD_DIR: ${{ runner.temp }}/files
