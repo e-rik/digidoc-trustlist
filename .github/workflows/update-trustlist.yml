@@ -22,6 +22,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ca-certificates libxml2-utils
+          sudo install -m 0644 certificates/eidas.gov.ie-issuer.pem \
+            /usr/local/share/ca-certificates/eidas.gov.ie-issuer.crt
           sudo update-ca-certificates
 
       - name: Download files
