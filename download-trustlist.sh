@@ -11,7 +11,7 @@ xmllint --xpath "//*[local-name() = 'TrustServiceStatusList']/*[local-name() = '
     | grep '\.xml$' \
     |
 while IFS= read -r file; do
-    printf "Downloading $file ...\n"
+    printf "Downloading %s ...\n" "$file"
     curl -fLO "$file"
 done
 
@@ -23,7 +23,7 @@ mapfile -t mime_types < <(xmllint --xpath "//*[local-name() = 'TrustServiceStatu
 for i in "${!urls[@]}"; do
     if [[ "${mime_types[$i]}" == "application/vnd.etsi.tsl+xml" ]] ; then
         if [[ "${territories[$i]}" != "EU" ]]; then
-            printf "Downloading ${urls[$i]} => ${territories[$i]}.xml ...\n"
+            printf "Downloading %s => %s ...\n" "${urls[$i]}" "${territories[$i]}.xml"
             curl -fL "${urls[$i]}" -o "${territories[$i]}.xml"
         fi
     fi
