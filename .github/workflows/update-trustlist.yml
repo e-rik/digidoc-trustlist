@@ -18,10 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install xmllint
+      - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y libxml2-utils
+          sudo apt install -y ca-certificates libxml2-utils
+          sudo update-ca-certificates
 
       - name: Download files
         env:
