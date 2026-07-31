@@ -28,7 +28,7 @@ jobs:
           mkdir ${{ runner.temp }}/files
 
       - name: Download files
-        run: bash "$GTIHUB_WORKSPACE/download-trustlist.sh"
+        run: bash "${{ github.workspace }}/download-trustlist.sh"
         working-directory: ${{ runner.temp }}/files
 
       - name: Package files
