@@ -5,14 +5,14 @@ set -euo pipefail
 pushd $TRUSTLIST_DOWNLOAD_DIR
 
 printf "Downloading https://ec.europa.eu/tools/lotl/eu-lotl.xml ...\n"
-curl -fLO https://ec.europa.eu/tools/lotl/eu-lotl.xml
+curl -fLO https://ec.europa.eu/tools/lotl/eu-lotl.xml --connect-timeout 10 --retry 5
 
 xmllint --xpath "//*[local-name() = 'TrustServiceStatusList']/*[local-name() = 'SchemeInformation']/*[local-name() = 'SchemeInformationURI']/*[local-name() = 'URI']/text()" eu-lotl.xml \
     | grep '\.xml$' \
     |
 while IFS= read -r file; do
     printf "Downloading %s ...\n" "$file"
-    curl -fLO "$file"
+    curl -fLO "$file" --connect-timeout 10 --retry 5
 done
 
 mapfile -t urls < <(xmllint --xpath "//*[local-name() = 'TrustServiceStatusList']/*[local-name() = 'SchemeInformation']/*[local-name() = 'PointersToOtherTSL']/*[local-name() = 'OtherTSLPointer']/*[local-name() = 'TSLLocation']/text()" eu-lotl.xml)
@@ -24,7 +24,7 @@ for i in "${!urls[@]}"; do
     if [[ "${mime_types[$i]}" == "application/vnd.etsi.tsl+xml" ]] ; then
         if [[ "${territories[$i]}" != "EU" ]]; then
             printf "Downloading %s => %s ...\n" "${urls[$i]}" "${territories[$i]}.xml"
-            curl -fL "${urls[$i]}" -o "${territories[$i]}.xml"
+            curl -fL "${urls[$i]}" -o "${territories[$i]}.xml" --connect-timeout 10 --retry 5
         fi
     fi
 done
